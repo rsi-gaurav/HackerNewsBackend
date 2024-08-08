@@ -7,12 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HackerNews", "HackerNews.cs
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HackerNews.Domain", "..\HackerNew.Domain\HackerNews.Domain.csproj", "{E6ACBC5D-6617-4D50-92A8-9CEFB9802492}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HackerNews.Tests", "..\HackerNews.Tests\HackerNews.Tests.csproj", "{B1831334-0A05-4426-A785-71716AF311FF}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{562DD822-60D6-4D80-B3EB-E24F7C5715F8}"
 	ProjectSection(SolutionItems) = preProject
 		..\README.md = ..\README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HackerNews.Tests", "..\TestProject1\HackerNews.Tests.csproj", "{B56E09D9-5E31-4770-A93D-E0F3AA36F924}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,10 +28,10 @@ Global
 		{E6ACBC5D-6617-4D50-92A8-9CEFB9802492}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6ACBC5D-6617-4D50-92A8-9CEFB9802492}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E6ACBC5D-6617-4D50-92A8-9CEFB9802492}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B1831334-0A05-4426-A785-71716AF311FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B1831334-0A05-4426-A785-71716AF311FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B1831334-0A05-4426-A785-71716AF311FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B1831334-0A05-4426-A785-71716AF311FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B56E09D9-5E31-4770-A93D-E0F3AA36F924}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B56E09D9-5E31-4770-A93D-E0F3AA36F924}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B56E09D9-5E31-4770-A93D-E0F3AA36F924}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B56E09D9-5E31-4770-A93D-E0F3AA36F924}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
