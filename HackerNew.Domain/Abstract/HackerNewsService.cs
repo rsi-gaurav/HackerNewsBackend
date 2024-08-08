@@ -4,6 +4,7 @@ using HackerNews.Domain.Constants;
 using Microsoft.Extensions.Caching.Memory;
 using System.Text.Json;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace HackerNews.Domain.Abstract
 {
@@ -34,6 +35,7 @@ namespace HackerNews.Domain.Abstract
         /// <returns>The list of new stories.</returns>
         public async Task<List<HackerNewsDTO>> GetNewStoriesAsync()
         {
+
             if (_memoryCache.TryGetValue(NewStoriesCacheKey, out List<HackerNewsDTO>? hackernewslist))
             {
                 return hackernewslist;
@@ -42,25 +44,26 @@ namespace HackerNews.Domain.Abstract
             var client = _httpClientFactoryService.CreateClient();
 
             // Fetch the top stories
-            var response = await client.GetAsync(ApiUrls.TopStories);
+            var response = await client.GetAsync(ApiUrls.NewStories);
             response.EnsureSuccessStatusCode();
             var responseContent = await response.Content.ReadAsStringAsync();
 
             // Deserialize the list of story IDs
             var storyIds = JsonSerializer.Deserialize<List<int>>(responseContent);
 
+            hackernewslist = new List<HackerNewsDTO>();
             // Fetch details for each story in parallel
-            var tasks = storyIds.Select(async id =>
+            Parallel.ForEach(storyIds, id =>
             {
-                var storyResponse = await client.GetAsync(string.Format(ApiUrls.StoryDetails, id));
-                storyResponse.EnsureSuccessStatusCode();
-                var storyContent = await storyResponse.Content.ReadAsStringAsync();
-                var story = JsonSerializer.Deserialize<HackerNewsDTO>(storyContent);
-                return story;
+                var storyResponse = client.GetAsync(string.Format(ApiUrls.StoryDetails, id));
+                var storyContent = storyResponse.Result.Content.ReadAsStringAsync();
+                HackerNewsDTO? story = JsonSerializer.Deserialize<HackerNewsDTO>(storyContent.Result);
+                if (story != null)
+                {
+                    hackernewslist.Add(story);
+                }
             });
-
-            var stories = await Task.WhenAll(tasks);
-            hackernewslist = stories.Where(s => s != null).ToList();
+            hackernewslist = hackernewslist.OrderByDescending(o => o.id).ToList();
 
             var cacheEntryOptions = new MemoryCacheEntryOptions()
                 .SetSlidingExpiration(_cacheDuration)
