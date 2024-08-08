@@ -6,9 +6,9 @@ namespace HackerNews.Domain.Constants
     public static class ApiUrls
     {
         /// <summary>
-        /// The URL for retrieving the top stories.
+        /// The URL for retrieving the new stories.
         /// </summary>
-        public const string TopStories = "https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty";
+        public const string NewStories = "https://hacker-news.firebaseio.com/v0/newstories.json?print=pretty";
 
         /// <summary>
         /// The URL for retrieving the details of a story.
