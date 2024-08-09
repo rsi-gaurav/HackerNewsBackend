@@ -53,7 +53,7 @@ namespace HackerNews.Domain.Abstract
 
             hackernewslist = new List<HackerNewsDTO>();
             // Fetch details for each story in parallel
-            Parallel.ForEach(storyIds, id =>
+            Parallel.ForEach(storyIds.Take(200), id =>
             {
                 var storyResponse = client.GetAsync(string.Format(ApiUrls.StoryDetails, id));
                 var storyContent = storyResponse.Result.Content.ReadAsStringAsync();
