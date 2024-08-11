@@ -34,7 +34,7 @@ namespace HackerNews.Domain.Abstract
             // Check if the new stories are available in the cache
             if (_memoryCache.TryGetValue(NewStoriesCacheKey, out List<HackerNewsDTO>? hackernewslist))
             {
-                return hackernewslist;
+                return hackernewslist!;
             }
             hackernewslist = new List<HackerNewsDTO>(0);
             var storiesIDes = (await _apiService.GetAllStoriesIds()).Take(200);

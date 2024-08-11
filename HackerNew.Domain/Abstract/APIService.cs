@@ -34,7 +34,7 @@ namespace HackerNews.Domain.Abstract
 
             // Deserialize the list of story IDs
             var storyIds = JsonSerializer.Deserialize<List<int>>(responseContent);
-            return storyIds;
+            return storyIds!;
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace HackerNews.Domain.Abstract
 
             // Deserialize the story details
             HackerNewsDTO? story = JsonSerializer.Deserialize<HackerNewsDTO>(storyContent.Result);
-            return story;
+            return story!;
         }
     }
 }
