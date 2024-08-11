@@ -15,32 +15,37 @@ namespace HackerNews.Domain.Abstract
         private readonly HackerNewsService _hackerNewsService;
         private readonly Mock<IAPIService> _apiServiceMock;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HackerNewsServiceTests"/> class.
+        /// </summary>
         public HackerNewsServiceTests()
         {
             _memoryCacheMock = new Mock<IMemoryCache>();
-            //var memoryCache = new MemoryCache(new MemoryCacheOptions());
             _apiServiceMock = new Mock<IAPIService>();
             _hackerNewsService = new HackerNewsService(_memoryCacheMock.Object, _apiServiceMock.Object);
         }
 
+        /// <summary>
+        /// Test case for the GetNewStoriesAsync method when cache is available.
+        /// </summary>
         [Fact]
         public async Task GetNewStoriesAsync_ShouldReturnCachedList_WhenCacheIsAvailable()
         {
             // Arrange
             var key = "NewStories";
             var cachedList = new List<HackerNewsDTO> { new HackerNewsDTO { id = 1, title = "Test Story" } };
-            //_memoryCacheMock.Setup(m => m.Get<List<HackerNewsDTO>>("NewStories")).Returns(cachedList);
             _memoryCacheMock.Setup(cache => cache.TryGetValue(key, out It.Ref<object>.IsAny)).Returns(true);
-            //_memoryCacheMock.Setup(cache => cache.TryGetValue(key, out It.Ref<object>.IsAny)).Throws(new Exception("Test exception"));
 
             // Act
             var result = await _hackerNewsService.GetNewStoriesAsync();
 
             // Assert
             Assert.Null(result);
-            //Assert.Equal(cachedList, result);
         }
 
+        /// <summary>
+        /// Test case for the GetNewStoriesAsync method when cache is not available.
+        /// </summary>
         [Fact]
         public async Task GetNewStoriesAsync_ShouldFetchAndCacheList_WhenCacheIsNotAvailable()
         {

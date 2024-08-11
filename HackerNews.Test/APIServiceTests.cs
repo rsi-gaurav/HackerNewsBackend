@@ -64,22 +64,5 @@ namespace HackerNews.Domain.Abstract
             Assert.Equal(hackerNewsDTO.id, result.id);
             Assert.Equal(hackerNewsDTO.title, result.title);
         }
-
-        //[Fact]
-        //public async Task GetStoryDetail_ReturnsNull_WhenResponseIsNotSuccessful()
-        //{
-        //    // Arrange
-        //    var httpContext = new DefaultHttpContext();
-        //    httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-        //    var httpContextAccessor = new HttpContextAccessor { HttpContext = httpContext };
-            
-        //    var apiService = new APIService(null);
-
-        //    // Act
-        //    var result = await apiService.GetStoryDetail(1);
-
-        //    // Assert
-        //    //Assert.IsNull(result);
-        //}
     }
 }
