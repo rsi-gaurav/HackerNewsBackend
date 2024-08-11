@@ -44,8 +44,11 @@ namespace HackerNews.Domain.Abstract
         /// <returns>An asynchronous operation that returns the story details.</returns>
         public async Task<HackerNewsDTO> GetStoryDetail(int storyId)
         {
+            // Fetch story details
             var storyResponse = await _httpClient.GetAsync(string.Format(ApiUrls.StoryDetails, storyId));
             var storyContent = storyResponse.Content.ReadAsStringAsync();
+
+            // Deserialize the story details
             HackerNewsDTO? story = JsonSerializer.Deserialize<HackerNewsDTO>(storyContent.Result);
             return story;
         }

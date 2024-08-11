@@ -31,6 +31,7 @@ namespace HackerNews.Domain.Abstract
         /// <returns>A list of <see cref="HackerNewsDTO"/> representing the new stories.</returns>
         public async Task<List<HackerNewsDTO>> GetNewStoriesAsync()
         {
+            // Check if the new stories are available in the cache
             if (_memoryCache.TryGetValue(NewStoriesCacheKey, out List<HackerNewsDTO>? hackernewslist))
             {
                 return hackernewslist;
@@ -38,6 +39,7 @@ namespace HackerNews.Domain.Abstract
             hackernewslist = new List<HackerNewsDTO>(0);
             var storiesIDes = (await _apiService.GetAllStoriesIds()).Take(200);
 
+            //fetch the details of the stories in parallel
             Parallel.ForEach(storiesIDes, id =>
             {
                 var tasks = _apiService.GetStoryDetail(id);
@@ -46,13 +48,18 @@ namespace HackerNews.Domain.Abstract
                     hackernewslist.Add(tasks.Result);
                 }
             });
+
+            // Sort the stories by ID
             hackernewslist = hackernewslist.OrderByDescending(o => o.id).ToList();
             var cacheEntryOptions = new MemoryCacheEntryOptions()
                 .SetSlidingExpiration(_cacheDuration)
                 .SetAbsoluteExpiration(_cacheDuration);
 
+            // Cache the new stories
             _memoryCache.Set(NewStoriesCacheKey, hackernewslist, cacheEntryOptions);
-            return hackernewslist;
+
+            // Add null-forgiving operator to indicate that the return value is not null
+            return hackernewslist!; 
         }
     }
 }
