@@ -33,8 +33,9 @@ namespace HackerNews.Domain.Abstract
         {
             // Arrange
             var key = "NewStories";
+            object? outValue = null;
             var cachedList = new List<HackerNewsDTO> { new HackerNewsDTO { id = 1, title = "Test Story" } };
-            _memoryCacheMock.Setup(cache => cache.TryGetValue(key, out It.Ref<object>.IsAny)).Returns(true);
+            _memoryCacheMock.Setup(cache => cache.TryGetValue(key, out outValue)).Returns(true);
 
             // Act
             var result = await _hackerNewsService.GetNewStoriesAsync();
@@ -50,11 +51,12 @@ namespace HackerNews.Domain.Abstract
         public async Task GetNewStoriesAsync_ShouldFetchAndCacheList_WhenCacheIsNotAvailable()
         {
             var key = "NewStories";
-            var expectedStoryIds = new List<int> { 1 };
             var storyId = 1;
-            var hackerNewsDTO = new HackerNewsDTO { id = 1, title = "Test Story" };
+            object? outValue = null;
             var entryMock = new Mock<ICacheEntry>();
-            _memoryCacheMock.Setup(cache => cache.TryGetValue(key, out It.Ref<object>.IsAny)).Returns(false);
+            var expectedStoryIds = new List<int> { 1 };
+            var hackerNewsDTO = new HackerNewsDTO { id = 1, title = "Test Story" };
+            _memoryCacheMock.Setup(cache => cache.TryGetValue(key, out outValue)).Returns(false);
             _apiServiceMock.Setup(service => service.GetAllStoriesIds()).ReturnsAsync(expectedStoryIds);
             _apiServiceMock.Setup(service => service.GetStoryDetail(storyId)).ReturnsAsync(hackerNewsDTO);
             _memoryCacheMock.Setup(m => m.CreateEntry(It.IsAny<object>())).Returns(entryMock.Object);
