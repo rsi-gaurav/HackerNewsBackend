@@ -6,6 +6,7 @@ using Microsoft.ApplicationInsights;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
 builder.Services.AddControllers();
 builder.Services.AddCors(options =>
 {
@@ -22,9 +23,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient();
 builder.Services.AddMemoryCache();
-builder.Services.AddScoped<IHttpClientFactoryService, HttpClientFactoryService>();
+//builder.Services.AddScoped<IHttpClientFactoryService, HttpClientFactoryService>();
 builder.Services.AddScoped<IHackerNewsService, HackerNewsService>();
 builder.Services.AddTransient<TelemetryClient, TelemetryClient>();
+builder.Services.AddTransient<IAPIService, APIService>();
 
 builder.Services.AddControllers();
         
@@ -37,8 +39,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors("cors");
+app.UseCors();
 app.UseMiddleware<RequestResponseExceptionLogging>();
 app.UseHttpsRedirection();
+
+app.UseCors("cors");
 app.MapControllers();
+
 app.Run();
