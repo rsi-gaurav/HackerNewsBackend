@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using System.Threading;
-using Microsoft.ApplicationInsights;
+﻿using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace HackerNews.API.Middleware
 {
+    [ExcludeFromCodeCoverage]
+
     public class RequestResponseExceptionLogging
     {
         // <summary>
@@ -43,14 +39,12 @@ namespace HackerNews.API.Middleware
             try
             {
                 var request = httpContext.Request;
-
                 var requestResponse = new Dictionary<string, string>();
                 string eventName = string.Empty;
                 await next(httpContext);
             }
             catch (Exception ex)
             {
-              
                 _insights.TrackException(ex);
                 httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
                 var problemDetails = new ProblemDetails
