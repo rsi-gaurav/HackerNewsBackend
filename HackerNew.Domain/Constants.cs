@@ -1,5 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace HackerNews.Domain.Constants
 {
+    [ExcludeFromCodeCoverage]
     /// <summary>
     /// Contains the API URLs for Hacker News.
     /// </summary>
