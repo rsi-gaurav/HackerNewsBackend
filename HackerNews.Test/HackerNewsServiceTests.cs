@@ -1,5 +1,6 @@
 ﻿using HackerNews.Domain.DTO;
 using HackerNews.Domain.Interface;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Moq;
 
@@ -33,15 +34,17 @@ namespace HackerNews.Domain.Abstract
         {
             // Arrange
             var key = "NewStories";
-            object? outValue = null;
-            var cachedList = new List<HackerNewsDTO> { new HackerNewsDTO { id = 1, title = "Test Story" } };
-            _memoryCacheMock.Setup(cache => cache.TryGetValue(key, out outValue)).Returns(true);
+            object? cachedList = new List<HackerNewsDTO> { new HackerNewsDTO { id = 1, title = "Test Story" } }; ;
+            _memoryCacheMock.Setup(cache => cache.TryGetValue(key, out cachedList)).Returns(true);
 
             // Act
             var result = await _hackerNewsService.GetNewStoriesAsync();
 
             // Assert
-            Assert.Null(result);
+            Assert.NotNull(result);
+            Assert.True(result.Count > 0);
+            Assert.Equal(1, result[0].id);    
+            Assert.Equal("Test Story", result[0].title);
         }
 
         /// <summary>
@@ -66,6 +69,7 @@ namespace HackerNews.Domain.Abstract
 
             // Assert
             Assert.NotNull(result);
+            Assert.Equal(1, result[0].id);
             Assert.Equal("Test Story", result[0].title);
         }
     }
