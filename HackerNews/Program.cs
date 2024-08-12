@@ -2,6 +2,7 @@ using HackerNews.API.Middleware;
 using HackerNews.Domain.Abstract;
 using HackerNews.Domain.Interface;
 using Microsoft.ApplicationInsights;
+using System.Diagnostics.CodeAnalysis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,3 +41,8 @@ app.UseHttpsRedirection();
 app.UseCors("cors");
 app.MapControllers();
 app.Run();
+
+[ExcludeFromCodeCoverage]
+public partial class Program
+{
+}
